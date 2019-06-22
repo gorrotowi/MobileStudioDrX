@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DrXStore</string>
+    <string name="product_name">Nombre del producto</string>
+    <string name="add_product">Agregar producto</string>
+</resources>
