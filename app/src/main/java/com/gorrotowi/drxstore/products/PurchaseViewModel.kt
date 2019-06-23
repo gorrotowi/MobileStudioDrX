@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.gorrotowi.core.ProductEntity
+import com.gorrotowi.drxstore.utils.loge
+import com.gorrotowi.drxstore.utils.logv
 import com.gorrotowi.repository.sessions.RepositoryPurchaseTransaction
 import com.gorrotowi.repository.sessions.ResultPurchaseTransaction
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +39,28 @@ class PurchaseViewModel(application: Application) : AndroidViewModel(application
                     errorMessage.postValue(result.error.message)
                 }
             }
+        }
+    }
+
+    fun updateProductsAfterCheckout(products: List<ProductEntity?>) {
+        scope.launch {
+            val error = ""
+            products.map { productItem ->
+                productItem?.let { product ->
+                    when (val result =
+                        repositoryPurchase.updateProduct(product.id, product.quantity)) {
+                        is ResultPurchaseTransaction.ERROR -> {
+//                    errorMessage.postValue()
+                            loge("${result.error.message}")
+                            error.plus("Product ${product.productName} can not be updated\n")
+                        }
+                        is ResultPurchaseTransaction.SUCCESS -> {
+                            logv("${product.id} updated")
+                        }
+                    }
+                }
+            }
+            errorMessage.postValue(error)
         }
     }
 

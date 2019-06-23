@@ -40,6 +40,27 @@ class PurchasesTransactions {
 
     }
 
+    suspend fun updateQuantityProduct(id: String, quantity: Int) = withContext(Dispatchers.IO) {
+        return@withContext try {
+            val documentReference = firestore
+                .collection(ProductTransactions.PRODUCTS_COLUMN)
+                .document(id)
+            val remoteDocument = documentReference.get().await()
+            if (remoteDocument.data != null) {
+                val productPojo = remoteDocument.toObject(ProductPojo::class.java)
+                val newQuantity = productPojo?.quantity?.minus(quantity) ?: 0
+                documentReference.update("quantity", newQuantity).await()
+                ResultFBPurchasesTransaction.SUCCESS(true)
+            } else {
+                throw Exception("Item not found")
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResultFBPurchasesTransaction.ERROR(e)
+        }
+    }
+
     companion object {
         const val PURCHASES_COLUMN = "purchases"
     }

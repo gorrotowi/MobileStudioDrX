@@ -18,7 +18,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_purchase" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPurchaseListAdd"
@@ -29,6 +30,22 @@
         app:icon="@drawable/ic_camera_scan"
         app:iconGravity="textStart"
         app:iconPadding="20dp"
+        app:layout_constraintBottom_toTopOf="@id/btnPurchaseListCheckOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPurchaseListCheckOut"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Check-Out"
+        app:icon="@drawable/ic_dollar"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

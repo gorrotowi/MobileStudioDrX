@@ -61,7 +61,7 @@ class ProductTransactions {
                     val id = doc.id
                     val pojo = doc.toObject(ProductPojo::class.java)
                     pojo?.run {
-                        ProductEntity(id, productName, productDescrp, quantity, productCode, urlImg)
+                        ProductEntity(id, productName, productDescrp, quantity, productCode, urlImg, price)
                     }
                 }
                 Log.d("ListDocuments", "${listDocuments.map { it?.toString() }}")
@@ -78,6 +78,7 @@ class ProductTransactions {
             mapProduct["quantity"] = quantity
             mapProduct["productCode"] = productCode
             mapProduct["urlIm"] = urlImg
+            mapProduct["price"] = price
         }
         try {
             firestore.collection(PRODUCTS_COLUMN).document(product.id).update(mapProduct).await()

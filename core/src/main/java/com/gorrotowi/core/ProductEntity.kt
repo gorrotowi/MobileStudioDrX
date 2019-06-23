@@ -4,7 +4,8 @@ data class ProductEntity(
     val id: String,
     val productName: String,
     val productDescrp: String,
-    val quantity: Int,
+    var quantity: Int,
     val productCode: String,
-    val urlImg: String
+    val urlImg: String,
+    val price: Float
 )

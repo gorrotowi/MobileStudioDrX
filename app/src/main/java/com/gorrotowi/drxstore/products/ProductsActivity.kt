@@ -52,7 +52,8 @@ class ProductsActivity : AppCompatActivity() {
                     params.getString(FormProductActivity.PRODUCT_DESCRIPTION, ""),
                     params.getInt(FormProductActivity.PRODUCT_QUANTITY, 1),
                     params.getString(FormProductActivity.PRODUCT_CODE, ""),
-                    params.getString(FormProductActivity.PRODUCT_URL_IMG, "")
+                    params.getString(FormProductActivity.PRODUCT_URL_IMG, ""),
+                    params.getFloat(FormProductActivity.PRODUCT_PRICE, 0f)
                 )
             }
             productToSaveOrUpdate?.let { product ->
@@ -70,7 +71,9 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun setUpObservers() {
         productsViewModel.productsList.observe(this, Observer { productsList ->
-            productsAdapter.dataSource = productsList
+            productsList?.toMutableList()?.let { list ->
+                productsAdapter.dataSource = list
+            }
         })
 
         productsViewModel.isSuccessTransation.observe(this, Observer {
@@ -96,7 +99,7 @@ class ProductsActivity : AppCompatActivity() {
             startActivityForResult(intent, FormProductActivity.ADD_PRODUCT_REQUEST_CODE)
         }
 
-        productsAdapter.setOnItemClickListener { productItem ->
+        productsAdapter.setOnItemClickListener { _, productItem ->
             alert = AlertDialog.Builder(this@ProductsActivity).apply {
                 setTitle("Producto ${productItem.productName}")
                 setCancelable(true)

@@ -11,7 +11,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.gorrotowi.drxstore.BuildConfig
 import com.gorrotowi.drxstore.R
 import com.gorrotowi.drxstore.products.ProductsActivity
-import com.gorrotowi.drxstore.products.PurchaseListActivity
 import com.gorrotowi.drxstore.register.RegisterActivity
 import com.gorrotowi.drxstore.sessions.GoogleSessions
 import com.gorrotowi.drxstore.utils.loge
@@ -36,11 +35,11 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         loge(BuildConfig.FLAVOR)
-        if (BuildConfig.FLAVOR == "develop") {
-            startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
-        } else {
-            startActivity(Intent(this@LoginActivity, PurchaseListActivity::class.java))
-        }
+//        if (BuildConfig.FLAVOR == "develop") {
+        startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
+//        } else {
+//        startActivity(Intent(this@LoginActivity, PurchaseListActivity::class.java))
+//        }
         setUpObservables()
         setUpListeners()
     }

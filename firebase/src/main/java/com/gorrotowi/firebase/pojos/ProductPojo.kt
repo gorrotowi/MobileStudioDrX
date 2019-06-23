@@ -5,5 +5,6 @@ data class ProductPojo(
     val productDescrp: String = "",
     val quantity: Int = 0,
     val productCode: String = "",
-    val urlImg: String = ""
+    val urlImg: String = "",
+    val price: Float = 0f
 )

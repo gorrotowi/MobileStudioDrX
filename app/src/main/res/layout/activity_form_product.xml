@@ -46,6 +46,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edtxFormProductDescription" />
 
@@ -55,6 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/btnFormProductSubstract"
         app:layout_constraintTop_toBottomOf="@id/edtxFormProductDescription" />
 
@@ -67,6 +71,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnFormProductAdd"
         app:layout_constraintTop_toBottomOf="@id/edtxFormProductDescription" />
+
+    <EditText
+        android:id="@+id/edtxFormProductPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:digits="1234567890."
+        android:hint="Precio del producto"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFormProductAdd" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFormProductTakePhoto"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Foto"
+        app:icon="@drawable/ic_camera_scan"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtxFormProductPrice" />
+
+    <ImageView
+        android:id="@+id/imgFormProduct"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_placeholder"
+        app:layout_constraintBottom_toTopOf="@id/btnFormProductSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnFormProductTakePhoto" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFormProductSave"

@@ -1,11 +1,9 @@
 package com.gorrotowi.repository.sessions
 
-import android.content.Context
 import com.gorrotowi.core.ProductEntity
 import com.gorrotowi.firebase.pojos.ProductPojo
 import com.gorrotowi.firebase.purchases.PurchasesTransactions
 import com.gorrotowi.firebase.purchases.ResultFBPurchasesTransaction
-import com.gorrotowi.repository.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,10 +11,6 @@ class RepositoryPurchaseTransaction {
 
     private val firebasePurchase by lazy {
         PurchasesTransactions()
-    }
-
-    fun getSomeString(ctx: Context) {
-        val baseurl = ctx.getString(R.string.baseURL)
     }
 
     suspend fun searchProduct(id: String) = withContext(Dispatchers.Default) {
@@ -31,9 +25,20 @@ class RepositoryPurchaseTransaction {
         }
     }
 
+    suspend fun updateProduct(id: String, quantity: Int) = withContext(Dispatchers.Default) {
+        return@withContext when (val result = firebasePurchase.updateQuantityProduct(id, quantity)) {
+            is ResultFBPurchasesTransaction.SUCCESS -> {
+                ResultPurchaseTransaction.SUCCESS(result.data)
+            }
+            is ResultFBPurchasesTransaction.ERROR -> {
+                ResultPurchaseTransaction.ERROR(result.error)
+            }
+        }
+    }
+
     private fun convertPojoToEntity(pojo: Pair<String, ProductPojo?>): ProductEntity? {
         return pojo.second?.run {
-            ProductEntity(pojo.first, productName, productDescrp, quantity, productCode, urlImg)
+            ProductEntity(pojo.first, productName, productDescrp, quantity, productCode, urlImg, price)
         }
     }
 
