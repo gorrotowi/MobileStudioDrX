@@ -7,5 +7,6 @@ data class ProductEntity(
     var quantity: Int,
     val productCode: String,
     val urlImg: String,
-    val price: Float
+    val price: Float,
+    val pathImg: String
 )

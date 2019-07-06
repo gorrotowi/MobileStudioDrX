@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.gorrotowi.drxstore.BuildConfig
+import com.gorrotowi.drxstore.DrawerHomeActivity
 import com.gorrotowi.drxstore.R
-import com.gorrotowi.drxstore.products.ProductsActivity
 import com.gorrotowi.drxstore.register.RegisterActivity
 import com.gorrotowi.drxstore.sessions.GoogleSessions
 import com.gorrotowi.drxstore.utils.loge
@@ -35,8 +35,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         loge(BuildConfig.FLAVOR)
+        startActivity(Intent(this@LoginActivity, DrawerHomeActivity::class.java))
+        finish()
 //        if (BuildConfig.FLAVOR == "develop") {
-        startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
+//        startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
 //        } else {
 //        startActivity(Intent(this@LoginActivity, PurchaseListActivity::class.java))
 //        }
@@ -61,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.userData.observe(this, Observer { userData ->
             userData?.let {
                 Toast.makeText(this@LoginActivity, userData.name, Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
+                startActivity(Intent(this@LoginActivity, DrawerHomeActivity::class.java))
             }
         })
 

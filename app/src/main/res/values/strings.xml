@@ -2,4 +2,6 @@
     <string name="app_name">DrXStore</string>
     <string name="product_name">Nombre del producto</string>
     <string name="add_product">Agregar producto</string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
 </resources>

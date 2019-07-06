@@ -38,7 +38,7 @@ class RepositoryPurchaseTransaction {
 
     private fun convertPojoToEntity(pojo: Pair<String, ProductPojo?>): ProductEntity? {
         return pojo.second?.run {
-            ProductEntity(pojo.first, productName, productDescrp, quantity, productCode, urlImg, price)
+            ProductEntity(pojo.first, productName, productDescrp, quantity, productCode, urlImg, price, pathImg)
         }
     }
 
