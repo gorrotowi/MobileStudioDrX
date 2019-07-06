@@ -13,21 +13,27 @@ import com.gorrotowi.drxstore.DrawerHomeActivity
 import com.gorrotowi.drxstore.R
 import com.gorrotowi.drxstore.register.RegisterActivity
 import com.gorrotowi.drxstore.sessions.GoogleSessions
+import com.gorrotowi.drxstore.userpreferences.UserData
+import com.gorrotowi.drxstore.userpreferences.UserLocalData
 import com.gorrotowi.drxstore.utils.loge
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    val loginViewModel: LoginViewModel by lazy {
+    private val loginViewModel: LoginViewModel by lazy {
         ViewModelProviders.of(this@LoginActivity).get(LoginViewModel::class.java)
     }
 
-    val gSessions: GoogleSessions by lazy {
+    private val gSessions: GoogleSessions by lazy {
         GoogleSessions()
     }
 
-    val gClient: GoogleSignInClient? by lazy {
+    private val gClient: GoogleSignInClient? by lazy {
         gSessions.initGClient(this)
+    }
+
+    private val userLocalData by lazy {
+        UserLocalData(this@LoginActivity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +59,9 @@ class LoginActivity : AppCompatActivity() {
             val account = gSessions.handleSignInRequest(GoogleSignIn.getSignedInAccountFromIntent(data))
             loge("Account -> ${account?.toString()}")
             loge("Account -> ${account?.idToken}")
+//            account?.displayName
+//            account?.email
+//            account?.photoUrl
             account?.idToken?.let {
                 loginViewModel.loginWithGoogle(it)
             }
@@ -62,8 +71,12 @@ class LoginActivity : AppCompatActivity() {
     private fun setUpObservables() {
         loginViewModel.userData.observe(this, Observer { userData ->
             userData?.let {
+                val userDataToSave = UserData(userData.name, userData.mail, userData.photoUrl)
+                loge("UserSavedData -> $userDataToSave")
+                userLocalData.saveUserData(userDataToSave)
                 Toast.makeText(this@LoginActivity, userData.name, Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@LoginActivity, DrawerHomeActivity::class.java))
+                finish()
             }
         })
 

@@ -67,6 +67,7 @@ class PurchaseListActivity : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        logv("FRAGMENT!!!! ")
         val intentIntegratorScanner = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         intentIntegratorScanner?.let { result ->
             if (result.contents == null) {
@@ -91,10 +92,10 @@ class PurchaseListActivity : Fragment() {
 
     private fun setUpListeners() {
         btnPurchaseListAdd?.setOnClickListener {
-            val intentBarCode = IntentIntegrator(activity)
+            val intentBarCode = IntentIntegrator.forSupportFragment(this@PurchaseListActivity)
             intentBarCode.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
             intentBarCode.setPrompt("Escanea un producto de la tienda para agregarlo a la lista")
-            intentBarCode.setBeepEnabled(true)
+            intentBarCode.setBeepEnabled(false)
             intentBarCode.setTimeout(5_000)
             intentBarCode.initiateScan()
         }

@@ -1,7 +1,5 @@
 package com.gorrotowi.firebase.session
 
-import android.content.Context
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +20,7 @@ class FirebaseGSession {
                 return@let UserLoginData(
                     it.displayName ?: "",
                     it.email ?: "",
+                    it.photoUrl?.toString() ?: "",
                     it.getIdToken(true).await()?.token ?: ""
                 )
             }
@@ -37,4 +36,4 @@ class FirebaseGSession {
 
 }
 
-data class UserLoginData(val displayName: String, val email: String, val idToken: String)
+data class UserLoginData(val displayName: String, val email: String, val photoUrl: String, val idToken: String)

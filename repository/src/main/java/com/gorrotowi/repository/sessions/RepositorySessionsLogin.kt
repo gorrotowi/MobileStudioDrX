@@ -1,6 +1,5 @@
 package com.gorrotowi.repository.sessions
 
-import android.content.Context
 import com.gorrotowi.firebase.session.FirebaseGSession
 
 class RepositorySessionsLogin {
@@ -13,7 +12,7 @@ class RepositorySessionsLogin {
         val user = firebaseGSession.signInWithGoogleAccountToken(idToken)
         return if (user != null) {
 
-            val userData = UserData(user.displayName, user.email)
+            val userData = UserData(user.displayName, user.email, user.photoUrl)
             ResultSessionLogin.SUCCESS(userData)
         } else {
             ResultSessionLogin.ERROR(Throwable("Error to sign in with Google"))
@@ -22,7 +21,7 @@ class RepositorySessionsLogin {
 
 }
 
-data class UserData(val name: String, val mail: String)
+data class UserData(val name: String, val mail: String, val photoUrl: String)
 
 sealed class ResultSessionLogin<out T : Any> {
     class SUCCESS<out T : Any>(val data: T) : ResultSessionLogin<T>()
