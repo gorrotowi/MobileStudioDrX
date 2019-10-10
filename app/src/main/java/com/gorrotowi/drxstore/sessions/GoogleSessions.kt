@@ -10,7 +10,7 @@ class GoogleSessions {
 
     fun initGClient(ctx: Context): GoogleSignInClient? {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("")
+            .requestIdToken("1032254686561-ieole9bfs7lda2rcf4g2u44dciibf37l.apps.googleusercontent.com")
             .requestEmail()
             .build()
 

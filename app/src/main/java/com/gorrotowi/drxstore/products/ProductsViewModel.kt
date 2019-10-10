@@ -1,15 +1,14 @@
 package com.gorrotowi.drxstore.products
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.gorrotowi.core.ProductEntity
 import com.gorrotowi.repository.sessions.RepositoryProductTransaction
 import com.gorrotowi.repository.sessions.ResultProductTransaction
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlin.coroutines.CoroutineContext
 
 class ProductsViewModel(application: Application) : AndroidViewModel(application) {
@@ -65,6 +64,15 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
                 is ResultProductTransaction.ERROR -> {
                     errorMessage.postValue(result.error.message)
                 }
+            }
+        }
+    }
+
+    @FlowPreview
+    fun getProductsChannel() {
+        scope.launch {
+            repository.getProductsChannel().collect {
+                Log.i("FROM FLOW", "$it")
             }
         }
     }

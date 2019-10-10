@@ -29,7 +29,11 @@ class ProductsActivity : Fragment() {
 
     private var alert: AlertDialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.activity_products, container, false)
     }
 
@@ -40,6 +44,7 @@ class ProductsActivity : Fragment() {
         setUpListeners()
 
         productsViewModel.getProducts()
+        productsViewModel.getProductsChannel()
     }
 
     override fun onPause() {
@@ -115,7 +120,10 @@ class ProductsActivity : Fragment() {
                     val intent = Intent(activity, FormProductActivity::class.java)
                     intent.putExtra(FormProductActivity.PRODUCT_ID, productItem.id)
                     intent.putExtra(FormProductActivity.PRODUCT_NAME, productItem.productName)
-                    intent.putExtra(FormProductActivity.PRODUCT_DESCRIPTION, productItem.productDescrp)
+                    intent.putExtra(
+                        FormProductActivity.PRODUCT_DESCRIPTION,
+                        productItem.productDescrp
+                    )
                     intent.putExtra(FormProductActivity.PRODUCT_QUANTITY, productItem.quantity)
                     intent.putExtra(FormProductActivity.PRODUCT_CODE, productItem.productCode)
                     intent.putExtra(FormProductActivity.PRODUCT_URL_IMG, productItem.urlImg)

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UserProfileActivity"></activity>
+        <activity android:name=".UserProfileActivity"/>
         <activity android:name=".DrawerHomeActivity" /> <!-- <activity android:name=".products.PurchaseListActivity" /> -->
         <activity android:name=".products.FormProductActivity" /> <!-- <activity android:name=".products.ProductsActivity" /> -->
         <activity android:name=".register.RegisterActivity" />

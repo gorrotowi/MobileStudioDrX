@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.gorrotowi.drxstore.BuildConfig
 import com.gorrotowi.drxstore.DrawerHomeActivity
 import com.gorrotowi.drxstore.R
 import com.gorrotowi.drxstore.register.RegisterActivity
@@ -40,9 +39,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        loge(BuildConfig.FLAVOR)
-        startActivity(Intent(this@LoginActivity, DrawerHomeActivity::class.java))
-        finish()
+//        loge(BuildConfig.FLAVOR)
+//        startActivity(Intent(this@LoginActivity, DrawerHomeActivity::class.java))
+//        finish()
 //        if (BuildConfig.FLAVOR == "develop") {
 //        startActivity(Intent(this@LoginActivity, ProductsActivity::class.java))
 //        } else {
@@ -56,7 +55,8 @@ class LoginActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         loge("ActivityResult requestCode -> $requestCode resultCode -> $resultCode")
         if (requestCode == 3005) {
-            val account = gSessions.handleSignInRequest(GoogleSignIn.getSignedInAccountFromIntent(data))
+            val account =
+                gSessions.handleSignInRequest(GoogleSignIn.getSignedInAccountFromIntent(data))
             loge("Account -> ${account?.toString()}")
             loge("Account -> ${account?.idToken}")
 //            account?.displayName

@@ -1,8 +1,10 @@
 package com.gorrotowi.repository.sessions
 
 import com.gorrotowi.core.ProductEntity
+import com.gorrotowi.firebase.pojos.ProductPojo
 import com.gorrotowi.firebase.transactions.ProductTransactions
 import com.gorrotowi.firebase.transactions.ResultFBTransaction
+import kotlinx.coroutines.flow.Flow
 
 class RepositoryProductTransaction {
 
@@ -19,6 +21,7 @@ class RepositoryProductTransaction {
             ResultProductTransaction.ERROR(Throwable("Producto no pudo ser agregado"))
         }
     }
+
     suspend fun updateProduct(product: ProductEntity): ResultProductTransaction<Boolean> {
         //todo transformar product:ProductApp a ProductEntity
         val isSuccessTransaction = firebaseTransaction.updateProduct(product)
@@ -36,6 +39,10 @@ class RepositoryProductTransaction {
         } else {
             ResultProductTransaction.ERROR(Throwable("Producto no pudo ser eliminado"))
         }
+    }
+
+    fun getProductsChannel(): Flow<ProductPojo> {
+        return firebaseTransaction.getProductFlow()
     }
 
     fun getProducts(result: (ResultProductTransaction<List<ProductEntity?>>) -> Unit) {

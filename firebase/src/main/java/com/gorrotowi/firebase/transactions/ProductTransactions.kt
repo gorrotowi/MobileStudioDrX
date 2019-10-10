@@ -6,6 +6,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.gorrotowi.core.ProductEntity
 import com.gorrotowi.firebase.pojos.ProductPojo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowViaChannel
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
@@ -41,10 +46,16 @@ class ProductTransactions {
         }
 
         try {
-            firestore
-                .collection(PRODUCTS_COLUMN)
-                .add(productPojo)
-                .await()
+
+            firestore.collection(PRODUCTS_COLUMN).add(productPojo).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    //return ok
+                } else {
+                    task.exception?.printStackTrace()
+                }
+            }
+
+            firestore.collection(PRODUCTS_COLUMN).add(productPojo).await()
             return@withContext true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -52,24 +63,55 @@ class ProductTransactions {
         }
     }
 
-    fun getProductsLmb(result: (ResultFBTransaction<List<ProductEntity?>>) -> Unit) {
+    @ExperimentalCoroutinesApi
+    @FlowPreview
+    fun getProductFlow(): Flow<ProductPojo> {
 
-        firestore.collection(PRODUCTS_COLUMN).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            firebaseFirestoreException?.let {
-                result(ResultFBTransaction.ERROR(it))
-            }
-            querySnapshot?.let { snapshot ->
-                val listDocuments = snapshot.documents.map { doc ->
-                    val id = doc.id
-                    val pojo = doc.toObject(ProductPojo::class.java)
-                    pojo?.run {
-                        ProductEntity(id, productName, productDescrp, quantity, productCode, urlImg, price, pathImg)
+        return flowViaChannel<ProductPojo> { channel ->
+            firestore.collection(PRODUCTS_COLUMN)
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    if (firebaseFirestoreException != null) {
+                        channel.close(firebaseFirestoreException)
+                    } else {
+                        querySnapshot?.let { snapshot ->
+                            snapshot.documents.map { doc ->
+                                val message = doc.toObject(ProductPojo::class.java)
+                                message?.let { channel.sendBlocking(it) }
+                            }
+                        }
                     }
                 }
-                Log.d("ListDocuments", "${listDocuments.map { it?.toString() }}")
-                result(ResultFBTransaction.SUCCESS(listDocuments))
-            }
         }
+    }
+
+    fun getProductsLmb(result: (ResultFBTransaction<List<ProductEntity?>>) -> Unit) {
+
+        firestore.collection(PRODUCTS_COLUMN)
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                firebaseFirestoreException?.let {
+                    result(ResultFBTransaction.ERROR(it))
+                }
+                querySnapshot?.let { snapshot ->
+                    val listDocuments = snapshot.documents.map { doc ->
+                        val id = doc.id
+                        val pojo = doc.toObject(ProductPojo::class.java)
+                        pojo?.run {
+                            ProductEntity(
+                                id,
+                                productName,
+                                productDescrp,
+                                quantity,
+                                productCode,
+                                urlImg,
+                                price,
+                                pathImg
+                            )
+                        }
+                    }
+                    Log.d("ListDocuments", "${listDocuments.map { it?.toString() }}")
+                    result(ResultFBTransaction.SUCCESS(listDocuments))
+                }
+            }
     }
 
     suspend fun updateProduct(product: ProductEntity) = withContext(Dispatchers.IO) {
